@@ -1,0 +1,76 @@
+
+
+{% block content %}
+
+<h3>Lista de Leads</h3>
+
+<form method="get" class="row mb-3">
+  <div class="col-md-3">
+    <input type="text" name="search" class="form-control" placeholder="Buscar..." value="{{ request.GET.search }}">
+  </div>
+
+  <div class="col-md-3">
+    <select name="categoria_fav" class="form-control">
+      <option value="">Categoría</option>
+      <option value="hombre">Hombre</option>
+      <option value="mujer">Mujer</option>
+      <option value="niño">Niño</option>
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <select name="tipo_lead" class="form-control">
+      <option value="">Tipo Lead</option>
+      <option value="nuevo">Nuevo</option>
+      <option value="recurrente">Recurrente</option>
+      <option value="inactivo">Inactivo</option>
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <select name="origen" class="form-control">
+      <option value="">Origen</option>
+      <option value="redes">Redes</option>
+      <option value="tv">TV</option>
+      <option value="volantes">Volantes</option>
+      <option value="otro">Otro</option>
+    </select>
+  </div>
+
+  <div class="col-md-12 mt-2">
+    <button class="btn btn-primary">Filtrar</button>
+  </div>
+</form>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Correo</th>
+      <th>Celular</th>
+      <th>Origen</th>
+      <th>Tipo</th>
+      <th>Categoría</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for l in leads %}
+    <tr>
+      <td>{{ l.id_lead }}</td>
+      <td>{{ l.nombre }} {{ l.ap }} {{ l.am }}</td>
+      <td>{{ l.correo }}</td>
+      <td>{{ l.num_cel }}</td>
+      <td>{{ l.origen }}</td>
+      <td>{{ l.get_tipo_lead_display }}</td>
+      <td>{{ l.categoria_fav }}</td>
+      <td>
+        <a href="{% url 'eliminar_lead' l.id_lead %}" class="btn btn-danger btn-sm">Eliminar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

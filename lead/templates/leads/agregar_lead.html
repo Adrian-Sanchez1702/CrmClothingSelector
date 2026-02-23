@@ -1,0 +1,176 @@
+{% load static %}
+
+{% block extrastyle %}
+
+<style>
+/* FONDO */
+body {
+  background: linear-gradient(135deg, #1a1a1a, #3b3b3b);
+  min-height: 100vh;
+}
+
+/* CONTENEDOR */
+.card {
+  max-width: 850px;
+  margin: 60px auto;
+  background: linear-gradient(135deg, #2a2a2a, #404040);
+  border-radius: 14px;
+  border: none;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.45);
+  color: #fff;
+}
+
+/* HEADER */
+.card-header {
+  background: transparent;
+  border: none;
+  text-align: center;
+  padding: 25px 20px 10px;
+}
+
+.card-header h5 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* BODY */
+.card-body {
+  padding: 30px 40px 40px;
+}
+
+/* TITULOS */
+.section-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ff3b3b;
+  text-transform: uppercase;
+  margin: 25px 0 15px;
+  border-bottom: 1px solid rgba(255,59,59,0.6);
+  padding-bottom: 6px;
+}
+
+/* LABELS */
+.form-group label {
+  font-size: 0.85rem;
+  color: #e0e0e0;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* INPUTS (CLAVE) */
+input, select, textarea {
+  width: 100%;
+  height: 42px;
+  border-radius: 8px;
+  border: none;
+  padding: 8px 12px;
+  background: #ffffff;
+  color: #222;
+  font-size: 0.9rem;
+}
+
+/* TEXTAREA */
+textarea {
+  height: auto;
+  resize: none;
+}
+
+/* FOCUS */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,59,59,0.7);
+}
+
+/* ESPACIOS */
+.form-group {
+  margin-bottom: 18px;
+}
+
+/* BOTONES */
+.btn-success {
+  background: #ff3b3b;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 40px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  transition: 0.2s ease-in-out;
+}
+
+.btn-success:hover {
+  background: #e63232;
+}
+
+/* FOOTER BOTONES */
+.d-flex {
+  margin-top: 30px;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h5>Agregar Lead</h5>
+  </div>
+
+  <div class="card-body">
+    <form method="POST">
+      {% csrf_token %}
+
+<!-- INFO PERSONAL -->
+<div class="section-title">Información Personal</div>
+
+<div class="row">
+  <div class="col-md-6 form-group">
+    <label>Nombre:</label>
+    {{ form.nombre }}
+  </div>
+  <div class="col-md-6 form-group">
+    <label>Apellido Paterno:</label>
+    {{ form.ap }}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 form-group">
+    <label>Apellido Materno:</label>
+    {{ form.am }}
+  </div>
+</div>
+
+<!-- CONTACTO -->
+<div class="section-title">Contacto</div>
+<div class="row">
+  <div class="col-md-6 form-group">
+    <label>Correo:</label>
+    {{ form.correo }}
+  </div>
+  <div class="col-md-6 form-group">
+    <label>Número de Celular:</label>
+    {{ form.num_cel }}
+  </div>
+</div>
+
+<!-- CLASIFICACIÓN -->
+<div class="section-title">Clasificación</div>
+<div class="row">
+  <div class="col-md-6 form-group">
+    <label>Origen:</label>
+    {{ form.origen }}
+  </div>
+</div>
+
+      <!-- BOTONES -->
+      <div class="d-flex justify-content-end mt-4">
+        <!--<a class="btn btn-danger mx-2">Cancelar</a>-->
+        <input type="submit" value="Guardar" class="btn btn-success mx-2">
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
