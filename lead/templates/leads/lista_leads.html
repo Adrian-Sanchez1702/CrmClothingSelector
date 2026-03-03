@@ -1,48 +1,199 @@
+{% block extrastyle %}
+<style>
+/* FONDO */
+body {
+  background: linear-gradient(135deg, #1a1a1a, #3b3b3b);
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
 
+/* TITULO */
+h3 {
+  text-align: center;
+  margin: 30px 0 20px;
+}
+
+/* FORM FILTRO */
+.filtro-form {
+  max-width: 1000px;
+  margin: 0 auto 25px;
+  background: linear-gradient(135deg, #2a2a2a, #404040);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* FILA FILTROS */
+.filtro-fila {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* CAMPOS */
+.filtro-campo {
+  flex: 1;
+  min-width: 180px;
+}
+
+/* INPUTS Y SELECT */
+.filtro-form input,
+.filtro-form select {
+  width: 100%;
+  height: 30px;
+  border-radius: 6px;
+  border: none;
+  padding: 3px 8px;
+  background: #fff;
+  color: #222;
+  font-size: 0.9rem;
+  line-height: 1.1;
+  font-family: Arial, sans-serif;
+}
+
+/* FOCUS */
+.filtro-form input:focus,
+.filtro-form select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,59,59,0.7);
+}
+
+/* BOTON FILTRAR */
+.filtro-boton {
+  margin-top: 15px;
+  text-align: right;
+}
+
+.boton-filtrar {
+  background: #ff3b3b;
+  border: none;
+  border-radius: 18px;
+  height: 32px;
+  padding: 0 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.boton-filtrar:hover {
+  background: #e63232;
+}
+
+/* TABLA */
+.tabla-leads {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 40px;
+  border-collapse: collapse;
+  background: linear-gradient(135deg, #2a2a2a, #404040);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* ENCABEZADO */
+.tabla-leads thead {
+  background: #ff3b3b;
+}
+
+.tabla-leads th {
+  padding: 10px;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+/* FILAS */
+.tabla-leads td {
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* HOVER FILA */
+.tabla-leads tbody tr:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+/* BOTON ELIMINAR */
+.boton-eliminar {
+  display: inline-block;
+  background: #ff3b3b;
+  color: #fff;
+  text-decoration: none;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  transition: 0.2s;
+}
+
+.boton-eliminar:hover {
+  background: #e63232;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .filtro-fila {
+    flex-direction: column;
+  }
+
+  .tabla-leads th,
+  .tabla-leads td {
+    font-size: 0.7rem;
+  }
+}
+</style>
+{% endblock %}
 
 {% block content %}
 
 <h3>Lista de Leads</h3>
 
-<form method="get" class="row mb-3">
-  <div class="col-md-3">
-    <input type="text" name="search" class="form-control" placeholder="Buscar..." value="{{ request.GET.search }}">
+<form method="get" class="filtro-form">
+
+  <div class="filtro-fila">
+    <div class="filtro-campo">
+      <input type="text" name="search" placeholder="Buscar..." value="{{ request.GET.search }}">
+    </div>
+
+    <div class="filtro-campo">
+      <select name="categoria_fav">
+        <option value="">Categoría</option>
+        <option value="hombre">Hombre</option>
+        <option value="mujer">Mujer</option>
+        <option value="niño">Niño</option>
+      </select>
+    </div>
+
+    <div class="filtro-campo">
+      <select name="tipo_lead">
+        <option value="">Tipo Lead</option>
+        <option value="nuevo">Nuevo</option>
+        <option value="recurrente">Recurrente</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+    </div>
+
+    <div class="filtro-campo">
+      <select name="origen">
+        <option value="">Origen</option>
+        <option value="redes">Redes</option>
+        <option value="tv">TV</option>
+        <option value="volantes">Volantes</option>
+        <option value="otro">Otro</option>
+      </select>
+    </div>
   </div>
 
-  <div class="col-md-3">
-    <select name="categoria_fav" class="form-control">
-      <option value="">Categoría</option>
-      <option value="hombre">Hombre</option>
-      <option value="mujer">Mujer</option>
-      <option value="niño">Niño</option>
-    </select>
+  <div class="filtro-boton">
+    <button type="submit" class="boton-filtrar">Filtrar</button>
   </div>
 
-  <div class="col-md-3">
-    <select name="tipo_lead" class="form-control">
-      <option value="">Tipo Lead</option>
-      <option value="nuevo">Nuevo</option>
-      <option value="recurrente">Recurrente</option>
-      <option value="inactivo">Inactivo</option>
-    </select>
-  </div>
-
-  <div class="col-md-3">
-    <select name="origen" class="form-control">
-      <option value="">Origen</option>
-      <option value="redes">Redes</option>
-      <option value="tv">TV</option>
-      <option value="volantes">Volantes</option>
-      <option value="otro">Otro</option>
-    </select>
-  </div>
-
-  <div class="col-md-12 mt-2">
-    <button class="btn btn-primary">Filtrar</button>
-  </div>
 </form>
 
-<table class="table table-bordered">
+<table class="tabla-leads">
   <thead>
     <tr>
       <th>ID</th>
@@ -66,7 +217,8 @@
       <td>{{ l.get_tipo_lead_display }}</td>
       <td>{{ l.categoria_fav }}</td>
       <td>
-        <a href="{% url 'eliminar_lead' l.id_lead %}" class="btn btn-danger btn-sm">Eliminar</a>
+        <a href="{% url 'editar_lead' l.id_lead %}" class="boton-filtrar">Editar</a>
+        <a href="{% url 'eliminar_lead' l.id_lead %}" class="boton-eliminar">Eliminar</a>
       </td>
     </tr>
     {% endfor %}

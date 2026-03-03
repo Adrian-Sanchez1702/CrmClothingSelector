@@ -10,7 +10,7 @@ def crear_lead(request):
             lead = form.save(commit=False)
             lead.usuario = request.user
             lead.save()
-            return redirect("crear_lead")
+            return redirect("lista_leads")
     else:
         form = LeadForm()
 
@@ -30,7 +30,7 @@ def lista_leads(request):
             Q(num_cel__icontains=search)
         )
 
-    # filtros
+    
     categoria = request.GET.get("categoria_fav")
     tipo = request.GET.get("tipo_lead")
     origen = request.GET.get("origen")
@@ -51,3 +51,20 @@ def eliminar_lead(request, id_lead):
     lead = get_object_or_404(Lead, id_lead=id_lead)
     lead.delete()
     return redirect("lista_leads")
+
+
+def editar_lead(request, id_lead):
+    lead = get_object_or_404(Lead, id_lead=id_lead, usuario=request.user)
+
+    if request.method == "POST":
+        form = LeadForm(request.POST, instance=lead)
+        if form.is_valid():
+            form.save()
+            return redirect("lista_leads")
+    else:
+        form = LeadForm(instance=lead)
+
+    return render(request, "leads/editar_lead.html", {
+        "form": form,
+        "lead": lead
+    })
