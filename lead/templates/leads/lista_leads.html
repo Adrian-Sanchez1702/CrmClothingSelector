@@ -1,5 +1,7 @@
+{% extends "base.html" %}
 {% block extrastyle %}
 <style>
+
 /* FONDO */
 body {
   background: linear-gradient(135deg, #1a1a1a, #3b3b3b);
@@ -24,6 +26,42 @@ h3 {
   box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
 
+/* BARRA SUPERIOR */
+.barra-superior{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+/* BUSCADOR */
+.buscador{
+  width:250px;
+  height:30px;
+  border-radius:6px;
+  border:none;
+  padding:3px 8px;
+  background:#fff;
+  color:#222;
+  font-size:0.9rem;
+}
+
+/* BOTON AGREGAR */
+.boton-agregar{
+  background:#2ecc71;
+  color:white;
+  text-decoration:none;
+  padding:8px 18px;
+  border-radius:18px;
+  font-size:0.8rem;
+  font-weight:600;
+  transition:0.2s;
+}
+
+.boton-agregar:hover{
+  background:#27ae60;
+}
+
 /* FILA FILTROS */
 .filtro-fila {
   display: flex;
@@ -38,7 +76,6 @@ h3 {
 }
 
 /* INPUTS Y SELECT */
-.filtro-form input,
 .filtro-form select {
   width: 100%;
   height: 30px;
@@ -48,15 +85,6 @@ h3 {
   background: #fff;
   color: #222;
   font-size: 0.9rem;
-  line-height: 1.1;
-  font-family: Arial, sans-serif;
-}
-
-/* FOCUS */
-.filtro-form input:focus,
-.filtro-form select:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(255,59,59,0.7);
 }
 
 /* BOTON FILTRAR */
@@ -75,7 +103,6 @@ h3 {
   font-weight: 600;
   color: #fff;
   cursor: pointer;
-  transition: 0.2s ease-in-out;
 }
 
 .boton-filtrar:hover {
@@ -112,7 +139,7 @@ h3 {
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* HOVER FILA */
+/* HOVER */
 .tabla-leads tbody tr:hover {
   background: rgba(255,255,255,0.05);
 }
@@ -126,7 +153,6 @@ h3 {
   padding: 4px 12px;
   border-radius: 12px;
   font-size: 0.75rem;
-  transition: 0.2s;
 }
 
 .boton-eliminar:hover {
@@ -135,6 +161,12 @@ h3 {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
+
+  .barra-superior{
+    flex-direction:column;
+    gap:10px;
+  }
+
   .filtro-fila {
     flex-direction: column;
   }
@@ -143,9 +175,12 @@ h3 {
   .tabla-leads td {
     font-size: 0.7rem;
   }
+
 }
+
 </style>
 {% endblock %}
+
 
 {% block content %}
 
@@ -153,76 +188,92 @@ h3 {
 
 <form method="get" class="filtro-form">
 
-  <div class="filtro-fila">
-    <div class="filtro-campo">
-      <input type="text" name="search" placeholder="Buscar..." value="{{ request.GET.search }}">
-    </div>
+<!-- BARRA SUPERIOR -->
+<div class="barra-superior">
 
-    <div class="filtro-campo">
-      <select name="categoria_fav">
-        <option value="">Categoría</option>
-        <option value="hombre">Hombre</option>
-        <option value="mujer">Mujer</option>
-        <option value="niño">Niño</option>
-      </select>
-    </div>
+<input class="buscador" type="text" name="search" placeholder="Buscar..." value="{{ request.GET.search }}">
 
-    <div class="filtro-campo">
-      <select name="tipo_lead">
-        <option value="">Tipo Lead</option>
-        <option value="nuevo">Nuevo</option>
-        <option value="recurrente">Recurrente</option>
-        <option value="inactivo">Inactivo</option>
-      </select>
-    </div>
 
-    <div class="filtro-campo">
-      <select name="origen">
-        <option value="">Origen</option>
-        <option value="redes">Redes</option>
-        <option value="tv">TV</option>
-        <option value="volantes">Volantes</option>
-        <option value="otro">Otro</option>
-      </select>
-    </div>
-  </div>
+</div>
 
-  <div class="filtro-boton">
-    <button type="submit" class="boton-filtrar">Filtrar</button>
-  </div>
+<!-- FILTROS -->
+<div class="filtro-fila">
+
+<div class="filtro-campo">
+<select name="categoria_fav">
+<option value="">Categoría</option>
+<option value="hombre">Hombre</option>
+<option value="mujer">Mujer</option>
+<option value="niño">Niño</option>
+</select>
+</div>
+
+<div class="filtro-campo">
+<select name="tipo_lead">
+<option value="">Tipo Lead</option>
+<option value="nuevo">Nuevo</option>
+<option value="recurrente">Recurrente</option>
+<option value="inactivo">Inactivo</option>
+</select>
+</div>
+
+<div class="filtro-campo">
+<select name="origen">
+<option value="">Origen</option>
+<option value="redes">Redes</option>
+<option value="tv">TV</option>
+<option value="volantes">Volantes</option>
+<option value="otro">Otro</option>
+</select>
+</div>
+
+</div>
+
+<div class="filtro-boton">
+<button type="submit" class="boton-filtrar">Filtrar</button>
+</div>
 
 </form>
 
+
 <table class="tabla-leads">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nombre</th>
-      <th>Correo</th>
-      <th>Celular</th>
-      <th>Origen</th>
-      <th>Tipo</th>
-      <th>Categoría</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for l in leads %}
-    <tr>
-      <td>{{ l.id_lead }}</td>
-      <td>{{ l.nombre }} {{ l.ap }} {{ l.am }}</td>
-      <td>{{ l.correo }}</td>
-      <td>{{ l.num_cel }}</td>
-      <td>{{ l.origen }}</td>
-      <td>{{ l.get_tipo_lead_display }}</td>
-      <td>{{ l.categoria_fav }}</td>
-      <td>
-        <a href="{% url 'editar_lead' l.id_lead %}" class="boton-filtrar">Editar</a>
-        <a href="{% url 'eliminar_lead' l.id_lead %}" class="boton-eliminar">Eliminar</a>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Nombre</th>
+<th>Correo</th>
+<th>Celular</th>
+<th>Origen</th>
+<th>Tipo</th>
+<th>Categoría</th>
+<th>Acciones</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for l in leads %}
+<tr>
+
+<td>{{ l.id_lead }}</td>
+<td>{{ l.nombre }} {{ l.ap }} {{ l.am }}</td>
+<td>{{ l.correo }}</td>
+<td>{{ l.num_cel }}</td>
+<td>{{ l.origen }}</td>
+<td>{{ l.get_tipo_lead_display }}</td>
+<td>{{ l.categoria_fav }}</td>
+
+<td>
+<a href="{% url 'editar_lead' l.id_lead %}" class="boton-filtrar">Editar</a>
+<a href="{% url 'eliminar_lead' l.id_lead %}" class="boton-eliminar">Eliminar</a>
+</td>
+
+</tr>
+{% endfor %}
+
+</tbody>
+
 </table>
 
 {% endblock %}

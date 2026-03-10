@@ -10,7 +10,7 @@ def crear_lead(request):
             lead = form.save(commit=False)
             lead.usuario = request.user
             lead.save()
-            return redirect("lista_leads")
+            return redirect("login")
     else:
         form = LeadForm()
 

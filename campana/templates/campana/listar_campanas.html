@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extrastyle %}
+
+<style>
+
+/* CONTENEDOR */
+
+.contenedor{
+max-width:1100px;
+margin:50px auto;
+}
+
+/* GRID TARJETAS */
+
+.grid-campanas{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
+}
+
+/* TARJETA */
+
+.card-campana{
+background: linear-gradient(135deg,#2a2a2a,#404040);
+border-radius:12px;
+padding:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* TITULO */
+
+.card-titulo{
+font-size:1.2rem;
+font-weight:bold;
+margin-bottom:10px;
+color:#ff3b3b;
+}
+
+/* TEXTO */
+
+.card-info{
+font-size:0.85rem;
+margin:6px 0;
+}
+
+/* ESTADOS */
+
+.estado-activa{
+color:#2ecc71;
+font-weight:bold;
+}
+
+.estado-inactiva{
+color:#ff3b3b;
+font-weight:bold;
+}
+
+/* BOTONES */
+
+.card-botones{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.btn{
+border:none;
+padding:8px 14px;
+border-radius:6px;
+font-size:0.8rem;
+cursor:pointer;
+}
+
+/* EDITAR */
+
+.btn-editar{
+background:#3498db;
+color:white;
+}
+
+/* ELIMINAR */
+
+.btn-eliminar{
+background:#ff3b3b;
+color:white;
+}
+
+.btn-eliminar:hover{
+background:#e63232;
+}
+
+/* BOTON AGREGAR */
+
+.btn-agregar{
+display:inline-block;
+margin:20px 0 30px 0;
+background:#2ecc71;
+color:white;
+padding:10px 18px;
+border-radius:8px;
+text-decoration:none;
+font-size:0.9rem;
+font-weight:bold;
+}
+
+.btn-agregar:hover{
+background:#27ae60;
+}
+
+</style>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="contenedor">
+
+<h2>Campañas Registradas</h2>
+
+<a href="{% url 'agregar_campana' %}" class="btn-agregar">
+Agregar Campaña
+</a>
+
+<div class="grid-campanas">
+
+{% for campana in campanas %}
+
+<div class="card-campana">
+
+<div class="card-titulo">
+{{ campana.nombre }}
+</div>
+
+<div class="card-info">
+<strong>Público objetivo:</strong> {{ campana.publico_obj }}
+</div>
+
+<div class="card-info">
+<strong>Mensaje:</strong><br>
+{{ campana.mensaje }}
+</div>
+
+<div class="card-info">
+
+<strong>Estado:</strong>
+
+{% if campana.estado == "Activa" %}
+
+<span class="estado-activa">Activa</span>
+
+{% else %}
+
+<span class="estado-inactiva">Inactiva</span>
+
+{% endif %}
+
+</div>
+
+<div class="card-info">
+<strong>Usuario:</strong>
+{{ campana.usuario }}
+</div>
+
+<div class="card-botones">
+
+<a href="{% url 'editar_campana' campana.id_cam %}">
+<button class="btn btn-editar">Editar</button>
+</a>
+
+<a href="{% url 'eliminar_campana' campana.id_cam %}">
+<button class="btn btn-eliminar">Eliminar</button>
+</a>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endblock %}

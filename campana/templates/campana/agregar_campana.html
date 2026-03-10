@@ -2,6 +2,7 @@
 
 {% block extrastyle %}
 <style>
+
 /* FONDO */
 body {
   background: linear-gradient(135deg, #1a1a1a, #3b3b3b);
@@ -69,20 +70,22 @@ body {
 /* INPUTS */
 input, select, textarea {
   width: 100%;
-  height: 24px;          /* más bajo */
   border-radius: 6px;
   border: none;
-  padding: 15px 6px;      /* menos espacio interno */
+  padding: 8px 6px;
   background: #ffffff;
   color: #222;
   font-size: 0.9rem;
-  line-height: 1.2;      /* texto centrado */
   font-family: Arial, sans-serif;
+}
+
+select {
+  height: 33px;
 }
 
 /* TEXTAREA */
 textarea {
-  min-height: 50px;      /* ya no tan alto */
+  min-height: 50px;
   resize: none;
 }
 
@@ -92,7 +95,7 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 2px rgba(255,59,59,0.7);
 }
 
-/* BOTON */
+/* BOTON GUARDAR */
 .boton-guardar {
   background: #ff3b3b;
   border: none;
@@ -104,21 +107,45 @@ input:focus, select:focus, textarea:focus {
   color: #fff;
   cursor: pointer;
   transition: 0.2s ease-in-out;
+
+  width: auto; /* 🔥 evita que se haga gigante */
 }
 
 .boton-guardar:hover {
   background: #e63232;
 }
 
-/* FOOTER BOTON */
+/* BOTON CANCELAR */
+
+.boton-cancelar {
+  background: #6c757d;
+  border-radius: 18px;
+  height: 32px;
+  padding: 0 28px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.boton-cancelar:hover {
+  background: #5a6268;
+}
+
+/* CONTENEDOR BOTONES */
+
 .footer-boton {
   display: flex;
   justify-content: center;
+  gap: 12px;
   margin-top: 20px;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
+
   .fila {
     flex-direction: column;
   }
@@ -126,78 +153,125 @@ input:focus, select:focus, textarea:focus {
   .contenedor {
     margin: 20px;
   }
+
 }
+
 </style>
 {% endblock %}
 
+
 {% block content %}
+
 <div class="contenedor">
+
   <div class="contenedor-header">
-    <h5>Agregar Lead</h5>
+    <h5>Crear Campaña</h5>
   </div>
 
   <div class="contenedor-body">
+
     <form method="POST">
       {% csrf_token %}
 
-      <!-- INFO PERSONAL -->
-      <div class="section-title">Información Personal</div>
+      <!-- INFORMACIÓN DE CAMPAÑA -->
 
-      <div class="fila">
-        <div class="campo">
-          <label>Nombre:</label>
-          {{ form.nombre }}
-        </div>
-        <div class="campo">
-          <label>Apellido Paterno:</label>
-          {{ form.ap }}
-        </div>
+      <div class="section-title">
+        Información de Campaña
       </div>
 
       <div class="fila">
-        <div class="campo">
-          <label>Apellido Materno:</label>
-          {{ form.am }}
-        </div>
-      </div>
 
-      <!-- CONTACTO -->
-      <div class="section-title">Contacto</div>
+        <div class="campo">
+          <label>Nombre de la Campaña:</label>
+          <input type="text" name="nombre" required>
+        </div>
+
+        <div class="campo">
+
+          <label>Público Objetivo:</label>
+
+          <select name="publico_obj" required>
+
+            <option value="">Selecciona</option>
+
+            <option value="Hombre">
+              Hombre
+            </option>
+
+            <option value="Mujer">
+              Mujer
+            </option>
+
+            <option value="Niño">
+              Niño
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
 
       <div class="fila">
-        <div class="campo">
-          <label>Correo:</label>
-          <input type="email" name="correo" required>
-        </div>
 
         <div class="campo">
-          <label>Número de Celular:</label>
-          <input 
-            type="tel"
-            name="num_cel"
-            maxlength="10"
-            pattern="[0-9]{10}"
-            title="El número debe tener exactamente 10 dígitos"
-            required>
+          <label>Mensaje de la Campaña:</label>
+
+          <textarea name="mensaje" required></textarea>
+
         </div>
+
       </div>
 
-      <!-- CLASIFICACIÓN -->
-      <div class="section-title">Clasificación</div>
+      <!-- ESTADO -->
+
+      <div class="section-title">
+        Estado
+      </div>
 
       <div class="fila">
+
         <div class="campo">
-          <label>Origen:</label>
-          {{ form.origen }}
+
+          <label>Estado de la Campaña:</label>
+
+          <select name="estado" required>
+
+            <option value="">Selecciona</option>
+
+            <option value="Activa">
+              Activa
+            </option>
+
+            <option value="Inactiva">
+              Inactiva
+            </option>
+
+          </select>
+
         </div>
+
       </div>
 
-      <!-- BOTON -->
+      <!-- BOTONES -->
+
       <div class="footer-boton">
-        <input type="submit" value="Guardar" class="boton-guardar">
+
+        <a href="{% url 'listar_campanas' %}" class="boton-cancelar">
+          Cancelar
+        </a>
+
+        <input 
+        type="submit"
+        value="Guardar Campaña"
+        class="boton-guardar">
+
       </div>
 
     </form>
+
   </div>
+
 </div>
+
 {% endblock %}

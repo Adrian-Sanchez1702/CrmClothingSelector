@@ -1,9 +1,21 @@
 from django.db import models
-
-from django.db import models
 from django.contrib.auth.models import User
 
+
 class Campana(models.Model):
+
+    
+    PUBLICO_OPCIONES = [
+        ('Hombre', 'Hombre'),
+        ('Mujer', 'Mujer'),
+        ('Niño', 'Niño'),
+    ]
+
+    ESTADO_OPCIONES = [
+        ('Activa', 'Activa'),
+        ('Inactiva', 'Inactiva'),
+    ]
+
     id_cam = models.AutoField(primary_key=True)
 
     usuario = models.ForeignKey(
@@ -14,9 +26,16 @@ class Campana(models.Model):
     )
 
     nombre = models.TextField()
-    publico_obj = models.TextField()
+
+    publico_obj = models.TextField(
+        choices=PUBLICO_OPCIONES
+    )
+
     mensaje = models.TextField()
-    estado = models.TextField()
+
+    estado = models.TextField(
+        choices=ESTADO_OPCIONES
+    )
 
     def __str__(self):
         return self.nombre

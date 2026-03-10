@@ -12,7 +12,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect("crear_lead")  # luego se hace esta vista catalogo
+            return redirect("lista_leads")  # luego se hace esta vista catalogo
         else:
             messages.error(request, "Usuario o contraseña incorrectos")
 
@@ -25,7 +25,7 @@ def register_view(request):
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Ese usuario ya existe")
-            return redirect("login")
+            return redirect("crear_lead")
 
         user = User.objects.create_user(
             username=username,
@@ -37,4 +37,4 @@ def register_view(request):
         user.groups.add(group)
 
         messages.success(request, "Usuario creado correctamente")
-        return redirect("login")
+        return redirect("crear_lead")
