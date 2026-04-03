@@ -1,0 +1,367 @@
+{% extends 'base.html' %}
+
+{% block extrastyle %}
+<style>
+/* VARIABLES Y ESTILOS GLOBALES */
+:root {
+    --primary: #ff3b3b;
+    --primary-dark: #e32e2e;
+    --primary-light: #ff6b6b;
+    --dark: #1a1a2e;
+    --dark-card: #16213e;
+    --dark-gradient-start: #1e2a3a;
+    --dark-gradient-end: #0f172a;
+    --text-light: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border-glow: rgba(255, 59, 59, 0.3);
+    --shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5);
+    --shadow-hover: 0 25px 40px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* ANIMACIONES */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* TITULOS */
+.titulo {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff, var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 30px;
+    letter-spacing: -0.5px;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.subtitulo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: var(--primary);
+    display: inline-block;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.subtitulo::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: 3px;
+}
+
+/* LISTAS MEJORADAS */
+.lista {
+    background: linear-gradient(135deg, var(--dark-gradient-start), var(--dark-gradient-end));
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lista:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.item {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.item:hover {
+    padding-left: 10px;
+    border-bottom-color: var(--primary-light);
+}
+
+.item:last-child {
+    border-bottom: none;
+}
+
+.item strong {
+    color: var(--primary);
+    font-size: 1.2rem;
+    background: rgba(255, 59, 59, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+/* GRID TARJETAS MEJORADO */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    animation: fadeInUp 0.6s ease-out 0.2s backwards;
+}
+
+/* TARJETAS MODERNAS */
+.card {
+    background: linear-gradient(135deg, var(--dark-gradient-start), var(--dark-gradient-end));
+    border-radius: 20px;
+    padding: 28px 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: left 0.6s ease;
+}
+
+.card:hover::before {
+    left: 100%;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--border-glow);
+}
+
+/* ICONOS EN TARJETAS */
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 8px 20px rgba(255, 59, 59, 0.3);
+}
+
+/* TITULO TARJETA */
+.card-titulo {
+    color: var(--primary-light);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* NUMERO DESTACADO */
+.card-numero {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff, var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 10px 0;
+    position: relative;
+    display: inline-block;
+}
+
+/* MENSAJE VACIO MEJORADO */
+.vacio {
+    background: linear-gradient(135deg, var(--dark-gradient-start), var(--dark-gradient-end));
+    padding: 40px 20px;
+    border-radius: 20px;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--text-muted);
+    border: 1px dashed rgba(255, 59, 59, 0.3);
+    animation: fadeInUp 0.6s ease-out;
+    font-size: 1.1rem;
+}
+
+.vacio::before {
+    content: '📊';
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 15px;
+    opacity: 0.6;
+}
+
+/* TARJETA DE ESTADÍSTICAS ADICIONALES */
+.stats-wrapper {
+    margin-bottom: 30px;
+}
+
+.stats-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 59, 59, 0.1);
+    padding: 8px 16px;
+    border-radius: 40px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .titulo {
+        font-size: 1.8rem;
+    }
+    
+    .subtitulo {
+        font-size: 1.3rem;
+    }
+    
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .card {
+        padding: 20px;
+    }
+    
+    .card-numero {
+        font-size: 2rem;
+    }
+}
+
+/* SCROLLBAR PERSONALIZADA */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-gradient-end);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-light);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<h1 class="titulo">
+    <span>📊 Reportes de análisis</span>
+</h1>
+
+<!-- CATEGORIA MAS VISITADA -->
+<div class="stats-wrapper">
+    <h2 class="subtitulo">
+        <span>🏆 Categoría más visitada</span>
+    </h2>
+
+    {% if categoria %}
+    <div class="lista">
+        {% for c in categoria %}
+        <div class="item">
+            <span>📁 {{ c.catalogo__categoria }}</span>
+            <strong>{{ c.total }} visitas</strong>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="vacio">
+        No hay información suficiente para generar reportes
+    </div>
+    {% endif %}
+</div>
+
+<!-- TOP FUENTES (TARJETAS) -->
+<div class="stats-wrapper">
+    <h2 class="subtitulo">
+        <span>🎯 Top fuentes de leads</span>
+    </h2>
+
+    {% if fuentes %}
+    <div class="grid">
+        {% for f in fuentes %}
+        <div class="card">
+            <div class="card-icon">
+                {% if 'volantes' in f.origen|lower %}
+                    📄
+                {% elif 'redes' in f.origen|lower %}
+                    🌐
+                {% elif 'facebook' in f.origen|lower %}
+                    📘
+                {% else %}
+                    📍
+                {% endif %}
+            </div>
+            <div class="card-titulo">{{ f.origen|title }}</div>
+            <div class="card-numero">{{ f.total }}</div>
+            <div class="stats-badge">
+                <span>leads</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="vacio">
+        No hay información suficiente para generar reportes
+    </div>
+    {% endif %}
+</div>
+
+<!-- CAMPANAS CON MAYOR IMPACTO -->
+<div class="stats-wrapper">
+    <h2 class="subtitulo">
+        <span>🚀 Campañas con mayor impacto</span>
+    </h2>
+
+    {% if campanas %}
+    <div class="lista">
+        {% for c in campanas %}
+        <div class="item">
+            <span>📢 {{ c.campana__nombre }}</span>
+            <strong>{{ c.total_clicks }} clics</strong>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="vacio">
+        No hay información suficiente para generar reportes
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'catalogo',
     'favoritos',
     'leadcampana',
+    'analisis',
 ]
 
 MIDDLEWARE = [
