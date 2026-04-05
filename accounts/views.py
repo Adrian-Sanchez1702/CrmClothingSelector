@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
+from django.contrib.auth import logout
 
 def login_view(request):
     if request.method == "POST":
@@ -25,16 +26,23 @@ def register_view(request):
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Ese usuario ya existe")
-            return redirect("crear_lead")
+            return redirect("login")
 
         user = User.objects.create_user(
             username=username,
             password=password
         )
 
-        #asignar grupo "cliente"
+        # asignar grupo "cliente"
         group, created = Group.objects.get_or_create(name="cliente")
         user.groups.add(group)
 
+        # 🔥 AQUI ESTÁ LA CLAVE
+        login(request, user)
+
         messages.success(request, "Usuario creado correctamente")
         return redirect("crear_lead")
+    
+def logout_view(request):
+    logout(request)
+    return redirect('login')  # nombre de tu URL de login

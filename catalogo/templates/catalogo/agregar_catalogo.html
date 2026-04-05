@@ -1,0 +1,207 @@
+{% load static %}
+
+{% block extrastyle %}
+<style>
+/* FONDO */
+body {
+  background: linear-gradient(135deg, #1a1a1a, #3b3b3b);
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* CONTENEDOR */
+.contenedor {
+  max-width: 850px;
+  margin: 60px auto;
+  background: linear-gradient(135deg, #2a2a2a, #404040);
+  border-radius: 14px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.45);
+  color: #fff;
+}
+
+/* HEADER */
+.contenedor-header {
+  text-align: center;
+  padding: 22px 20px 8px;
+}
+
+.contenedor-header h5 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* BODY */
+.contenedor-body {
+  padding: 22px 32px 30px;
+}
+
+/* TITULOS */
+.section-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ff3b3b;
+  text-transform: uppercase;
+  margin: 20px 0 10px;
+  border-bottom: 1px solid rgba(255,59,59,0.6);
+  padding-bottom: 5px;
+}
+
+/* FILAS */
+.fila {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+/* CAMPOS */
+.campo {
+  flex: 1;
+}
+
+.campo label {
+  font-size: 0.75rem;
+  color: #e0e0e0;
+  margin-bottom: 3px;
+  display: block;
+}
+
+/* INPUTS */
+input, textarea {
+  width: 100%;
+  height: 24px;
+  border-radius: 6px;
+  border: none;
+  padding: 15px 6px;
+  background: #ffffff;
+  color: #222;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  font-family: Arial, sans-serif;
+}
+
+/* SELECT CORREGIDO */
+select {
+  width: 100%;
+  height: 40px;
+  border-radius: 6px;
+  border: none;
+  padding: 0 10px;
+  background: #ffffff;
+  color: #222; /* Texto oscuro visible */
+  font-size: 0.9rem;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+}
+
+/* Opciones del select */
+select option {
+  background: #ffffff;
+  color: #222;
+}
+
+textarea {
+  min-height: 50px;
+  resize: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,59,59,0.7);
+}
+
+.boton-guardar {
+  background: #ff3b3b;
+  border: none;
+  border-radius: 18px;
+  height: 32px;
+  padding: 0 36px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.boton-guardar:hover {
+  background: #e63232;
+}
+
+.footer-boton {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .fila {
+    flex-direction: column;
+  }
+
+  .contenedor {
+    margin: 20px;
+  }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contenedor">
+  <div class="contenedor-header">
+    <h5>Agregar Producto</h5>
+  </div>
+
+  <div class="contenedor-body">
+
+    <!-- CAMBIO IMPORTANTE AQUI -->
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="section-title">Información General</div>
+
+      <div class="fila">
+        <div class="campo">
+          <label>Nombre:</label>
+          {{ form.nombre }}
+        </div>
+
+        <div class="campo">
+          <label>Categoría:</label>
+          {{ form.categoria }}
+        </div>
+      </div>
+
+      <div class="fila">
+        <div class="campo">
+          <label>Tipo de Prenda:</label>
+          {{ form.tipo_prenda }}
+        </div>
+      </div>
+
+      <div class="section-title">Descripción</div>
+
+      <div class="fila">
+        <div class="campo">
+          <label>Descripción:</label>
+          {{ form.descripcion }}
+        </div>
+      </div>
+
+      <div class="section-title">Imagen</div>
+
+      <div class="fila">
+        <div class="campo">
+          <label>Imagen:</label>
+          {{ form.img }}
+        </div>
+      </div>
+
+      <div class="footer-boton">
+        <input type="submit" value="Guardar Producto" class="boton-guardar">
+      </div>
+
+    </form>
+
+  </div>
+</div>
+{% endblock %}

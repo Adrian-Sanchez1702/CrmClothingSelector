@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from .forms import LeadForm
 from .models import Lead
+from django.contrib.auth.decorators import login_required
 
 def crear_lead(request):
     if request.method == "POST":
@@ -68,3 +69,17 @@ def editar_lead(request, id_lead):
         "form": form,
         "lead": lead
     })
+
+@login_required
+def actualizar_informacion(request):
+    lead, created = Lead.objects.get_or_create(usuario=request.user)
+
+    if request.method == 'POST':
+        form = LeadForm(request.POST, instance=lead)
+        if form.is_valid():
+            form.save()
+            return redirect("lista_leads")
+    else:
+        form = LeadForm(instance=lead)
+
+    return render(request, 'leads/editar_lead.html', {'form': form})

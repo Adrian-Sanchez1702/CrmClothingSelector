@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+/* CONTENEDOR */
+.contenedor{
+max-width:1100px;
+margin:50px auto;
+}
+
+/* 🔥 TITULO PRO */
+.titulo {
+font-size: 2.5rem;
+font-weight: 700;
+background: linear-gradient(135deg, #fff, #ff3b3b);
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+margin-bottom: 30px;
+letter-spacing: -0.5px;
+text-align: left; /* 🔥 alineado izquierda */
+}
+
+/* GRID TARJETAS */
+.contenedor-favoritos{
+display:grid;
+grid-template-columns: repeat(4, 250px);
+gap:20px;
+justify-content: center;
+}
+
+/* TARJETA */
+.card-fav{
+background: hsl(59, 100%, 62%);
+border-radius:12px;
+padding:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.5);
+text-align:center;
+}
+
+/* IMAGEN */
+.img-fav{
+width:100%;
+height:140px;
+object-fit:cover;
+border-radius:8px;
+}
+
+/* TITULO CARD */
+.card-fav h4{
+margin:10px 0;
+color:#ff3b3b;
+text-align:center; /* 🔥 se queda centrado */
+}
+
+/* TEXTO INFO (🔥 izquierda) */
+.card-info{
+font-size:0.85rem;
+margin:5px 0;
+color:#222;
+text-align:left; /* 🔥 clave */
+}
+
+/* BOTONES */
+.card-botones{
+display:flex;
+justify-content:center;
+margin-top:10px;
+}
+
+/* BOTON ELIMINAR */
+.btn-eliminar{
+background:#ff3b3b;
+color:white;
+padding:6px 14px;
+border-radius:12px;
+text-decoration:none;
+font-size:0.8rem;
+}
+
+.btn-eliminar:hover{
+background:#e63232;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px){
+  .contenedor-favoritos{
+    grid-template-columns: repeat(2, 250px);
+  }
+}
+
+</style>
+
+<div class="contenedor">
+
+<h3 class="titulo">Mis Favoritos</h3>
+
+<div class="contenedor-favoritos">
+
+{% for f in favoritos %}
+<div class="card-fav">
+
+  {% if f.catalogo.img %}
+    <img src="{{ f.catalogo.img.url }}" class="img-fav">
+  {% endif %}
+
+  <h4>{{ f.catalogo.nombre }}</h4>
+
+  <p class="card-info"><b>Categoría:</b> {{ f.catalogo.categoria }}</p>
+  <p class="card-info"><b>Tipo:</b> {{ f.catalogo.tipo_prenda }}</p>
+  <p class="card-info"><b>Descripción:</b> {{ f.catalogo.descripcion }}</p>
+
+  <p class="card-info"><b>Fecha:</b> {{ f.fecha }}</p>
+  <p class="card-info"><b>Usuario:</b> {{ f.usuario.username }}</p>
+
+  <div class="card-botones">
+    <a href="{% url 'eliminar_favorito' f.id_fav %}" class="btn-eliminar">
+      Eliminar
+    </a>
+  </div>
+
+</div>
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endblock %}

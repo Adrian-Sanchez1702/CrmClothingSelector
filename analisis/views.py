@@ -3,7 +3,7 @@ from favoritos.models import Favorito
 from lead.models import Lead
 from leadcampana.models import LeadCampana
 from django.db.models import Count
-
+from django.db.models import Count, Q
 
 def analisis(request):
 
@@ -17,7 +17,9 @@ def analisis(request):
 
     campanas_impacto = LeadCampana.objects.values(
         'campana__nombre'
-    ).annotate(total_clicks=Count('click')).order_by('-total_clicks')
+    ).annotate(
+        total_clicks=Count('id_ledcam', filter=Q(click=True))
+    ).order_by('-total_clicks')
 
     contexto = {
         'categoria': categoria_mas_visitada,

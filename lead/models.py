@@ -11,11 +11,9 @@ class Lead(models.Model):
 
     id_lead = models.AutoField(primary_key=True)
 
-    usuario = models.ForeignKey(
+    usuario = models.OneToOneField(
         User,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True
+        on_delete=models.CASCADE
     )
 
     nombre = models.TextField()

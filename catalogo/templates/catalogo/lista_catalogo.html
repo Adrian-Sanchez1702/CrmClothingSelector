@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+
+{% block extrastyle %}
+
+<style>
+
+:root {
+  --primary-light: #ff3b3b;
+}
+
+body {
+  background: linear-gradient(135deg, #1a1a1a, #3b3b3b);
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+/* 🔥 TITULO PRO */
+.titulo {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff, var(--primary-light));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 30px;
+  letter-spacing: -0.5px;
+  animation: fadeInUp 0.6s ease-out;
+  text-align: left;
+}
+
+/* FORM - CORREGIDO */
+.filtro-form {
+  max-width: 1000px;
+  margin: 0 auto 25px;
+  background: linear-gradient(135deg, #2a2a2a, #404040);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  box-sizing: border-box;
+}
+
+.filtro-fila {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.filtro-campo {
+  flex: 1;
+  min-width: 150px; /* CAMBIADO: 180px -> 150px */
+}
+
+.filtro-form input,
+.filtro-form select {
+  width: 100%;
+  height: 30px;
+  border-radius: 6px;
+  border: none;
+  padding: 3px 8px;
+  background: #fff;
+  color: #222;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.filtro-boton {
+  margin-top: 15px;
+  display: flex; /* CAMBIADO */
+  gap: 10px; /* NUEVO */
+  justify-content: flex-end; /* CAMBIADO */
+}
+
+.boton-filtrar {
+  background: #ff3b3b;
+  border: none;
+  border-radius: 18px;
+  height: 32px;
+  padding: 0 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  line-height: 32px;
+}
+
+/* ELIMINADA la regla problemática de .filtro-boton a.boton-filtrar */
+
+/* TABLA - SIN CAMBIOS */
+.tabla-catalogo {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 40px;
+  border-collapse: collapse;
+  background: linear-gradient(135deg, #2a2a2a, #404040);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.tabla-catalogo thead {
+  background: #ff3b3b;
+}
+
+.tabla-catalogo th {
+  padding: 10px;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+.tabla-catalogo td {
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.tabla-catalogo tbody tr:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+/* BOTONES */
+.boton-editar,
+.boton-eliminar {
+  background: #ff3b3b;
+  padding: 4px 12px;
+  border-radius: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 0.75rem;
+}
+
+.boton-eliminar:hover,
+.boton-editar:hover {
+  background: #e63232;
+}
+
+.img-producto {
+  width: 45px;
+  border-radius: 6px;
+}
+
+/* FAVORITO */
+.boton-favorito {
+  background: hsl(59, 100%, 62%);
+  padding: 4px 10px;
+  border-radius: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 0.8rem;
+  margin-left: 5px;
+}
+
+.boton-favorito:hover {
+  background: #e63232;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .filtro-fila {
+    flex-direction: column;
+  }
+  
+  .filtro-boton {
+    flex-direction: column; /* NUEVO: para móvil */
+  }
+  
+  .boton-filtrar {
+    width: 100%; /* NUEVO: para móvil */
+    text-align: center;
+  }
+}
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div style="max-width:1000px; margin:30px auto;">
+
+<h3 class="titulo">Lista Catalogo</h3>
+
+<form method="get" class="filtro-form">
+
+  <div class="filtro-fila">
+
+    <div class="filtro-campo">
+      <input type="text" name="search" placeholder="Buscar producto..." value="{{ request.GET.search }}">
+    </div>
+
+    <div class="filtro-campo">
+      <select name="categoria">
+        <option value="">Categoría</option>
+        <option value="hombre">Hombre</option>
+        <option value="mujer">Mujer</option>
+        <option value="niño">Niño</option>
+      </select>
+    </div>
+
+    <div class="filtro-campo">
+      <select name="tipo_prenda">
+        <option value="">Tipo de prenda</option>
+        <option value="playera">Playera</option>
+        <option value="pantalon">Pantalón</option>
+        <option value="sudadera">Sudadera</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="filtro-boton">
+    <button type="submit" class="boton-filtrar">Filtrar</button>
+
+    <a href="{% url 'crear_catalogo' %}" class="boton-filtrar">
+      Agregar
+    </a>
+  </div>
+
+</form>
+
+<table class="tabla-catalogo">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Imagen</th>
+<th>Nombre</th>
+<th>Categoría</th>
+<th>Tipo</th>
+<th>Descripción</th>
+<th>Acciones</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for p in productos %}
+<tr>
+
+<td>{{ p.id }}</td>
+
+<td>
+{% if p.img %}
+<img src="{{ p.img.url }}" class="img-producto">
+{% endif %}
+</td>
+
+<td>{{ p.nombre }}</td>
+<td>{{ p.categoria }}</td>
+<td>{{ p.tipo_prenda }}</td>
+<td>{{ p.descripcion }}</td>
+
+<td>
+<a href="{% url 'editar_producto' p.id %}" class="boton-editar">Editar</a>
+<a href="{% url 'eliminar_producto' p.id %}" class="boton-eliminar">Eliminar</a>
+<a href="{% url 'agregar_favorito' p.id %}" class="boton-favorito">❤️</a>
+</td>
+
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

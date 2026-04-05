@@ -2,20 +2,25 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Catalogo(models.Model):
-    id_cat = models.AutoField(primary_key=True)
 
-    usuario = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True
-    )
+    CATEGORIAS = [
+        ("hombre", "Hombre"),
+        ("mujer", "Mujer"),
+        ("niño", "Niño"),
+    ]
 
-    nombre = models.TextField()
+    TIPOS = [
+        ("playera", "Playera"),
+        ("pantalon", "Pantalón"),
+        ("sudadera", "Sudadera"),
+    ]
+
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=100)
+    categoria = models.CharField(max_length=20, choices=CATEGORIAS)
+    tipo_prenda = models.CharField(max_length=20, choices=TIPOS)
     descripcion = models.TextField()
-    categoria = models.TextField()
-    tipo_prenda = models.TextField()
-    img = models.CharField(max_length=255)
+    img = models.ImageField(upload_to="catalogo/", null=True, blank=True)
 
     def __str__(self):
         return self.nombre
