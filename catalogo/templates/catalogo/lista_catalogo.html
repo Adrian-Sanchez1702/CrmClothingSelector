@@ -15,7 +15,7 @@ body {
   color: #fff;
 }
 
-/* 🔥 TITULO PRO */
+/*  TITULO PRO */
 .titulo {
   font-size: 2.5rem;
   font-weight: 700;
@@ -214,9 +214,11 @@ body {
   <div class="filtro-boton">
     <button type="submit" class="boton-filtrar">Filtrar</button>
 
+    {% if user.is_staff %}
     <a href="{% url 'crear_catalogo' %}" class="boton-filtrar">
       Agregar
     </a>
+    {% endif %}
   </div>
 
 </form>
@@ -254,9 +256,13 @@ body {
 <td>{{ p.descripcion }}</td>
 
 <td>
-<a href="{% url 'editar_producto' p.id %}" class="boton-editar">Editar</a>
-<a href="{% url 'eliminar_producto' p.id %}" class="boton-eliminar">Eliminar</a>
-<a href="{% url 'agregar_favorito' p.id %}" class="boton-favorito">❤️</a>
+
+{% if user.is_staff %}
+  <a href="{% url 'editar_producto' p.id %}" class="boton-editar">Editar</a>
+  <a href="{% url 'eliminar_producto' p.id %}" class="boton-eliminar">Eliminar</a>
+{% else %} 
+  <a href="{% url 'agregar_favorito' p.id %}" class="boton-favorito">❤️</a>
+{% endif %}
 </td>
 
 </tr>

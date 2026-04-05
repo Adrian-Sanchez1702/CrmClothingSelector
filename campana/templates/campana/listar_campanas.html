@@ -137,9 +137,11 @@ background:#27ae60;
 
 <h2 class="titulo">Campañas Registradas</h2>
 
+{% if user.is_staff %}
 <a href="{% url 'agregar_campana' %}" class="btn-agregar">
 Agregar Campaña
 </a>
+{% endif %}
 
 <div class="grid-campanas">
 
@@ -177,12 +179,14 @@ Agregar Campaña
 </div>
 
 <div class="card-info">
+{% if user.is_staff %}  
 <strong>Usuario:</strong>
 {{ campana.usuario }}
+{% endif %}
 </div>
 
 <div class="card-botones">
-
+{% if user.is_staff %}
 <a href="{% url 'editar_campana' campana.id_cam %}">
 <button class="btn btn-editar">Editar</button>
 </a>
@@ -190,7 +194,7 @@ Agregar Campaña
 <a href="{% url 'eliminar_campana' campana.id_cam %}">
 <button class="btn btn-eliminar">Eliminar</button>
 </a>
-
+{% endif %}
 </div>
 
 </div>
