@@ -3,7 +3,9 @@ from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Favorito
 from catalogo.models import Catalogo
+from lead.models import Lead
 from datetime import date
+from collections import Counter
 
 @login_required
 def agregar_favorito(request, id):
@@ -17,7 +19,30 @@ def agregar_favorito(request, id):
             fecha=date.today()
         )
 
-    return redirect('lista_catalogo')  # regresa a tu lista
+    #  OBTENER LEAD DEL USUARIO
+    lead = Lead.objects.get(usuario=request.user)
+
+    #  OBTENER TODOS SUS FAVORITOS
+    favoritos = Favorito.objects.filter(usuario=request.user).select_related('catalogo')
+
+    #  CONTAR CATEGORÍAS
+    categorias = [f.catalogo.categoria for f in favoritos]
+
+    if categorias:
+        conteo = Counter(categorias)
+        categoria_mas_comun = conteo.most_common(1)[0][0]
+
+        #  ASIGNAR CATEGORIA FAVORITA
+        lead.categoria_fav = categoria_mas_comun
+
+    #  CAMBIAR TIPO DE LEAD
+    if favoritos.count() >= 10:
+        lead.tipo_lead = 'recurrente'
+
+    # guardar cambios
+    lead.save()
+
+    return redirect('lista_catalogo')
 
 @login_required
 def lista_favoritos(request):
