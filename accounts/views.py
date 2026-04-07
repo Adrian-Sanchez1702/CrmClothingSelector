@@ -13,7 +13,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect("lista_leads")  # luego se hace esta vista catalogo
+            return redirect("lista_catalogo")  # luego se hace esta vista catalogo
         else:
             messages.error(request, "Usuario o contraseña incorrectos")
 
@@ -37,7 +37,7 @@ def register_view(request):
         group, created = Group.objects.get_or_create(name="cliente")
         user.groups.add(group)
 
-        # 🔥 AQUI ESTÁ LA CLAVE
+        #  AQUI ESTÁ LA CLAVE
         login(request, user)
 
         messages.success(request, "Usuario creado correctamente")
